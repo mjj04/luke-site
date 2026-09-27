@@ -1,6 +1,6 @@
 {
   // Must match the Worker's name in the Cloudflare dashboard
-  "name": "luke-site",
+  "name": "luke",
   "main": "src/worker.js",
   "compatibility_date": "2026-09-01",
   "assets": {
