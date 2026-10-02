@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Luke's page</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐢</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;800&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<script>
+/* ============================================================
+   EDIT HERE: videos for Luke.
+   Paste any YouTube link (watch, youtu.be or shorts all work).
+   Newest at the top. "note" is optional.
+   ============================================================ */
+const VIDEOS = [
+  // { url: "https://www.youtube.com/watch?v=XXXXXXXXXXX", title: "Video title", note: "Watch the bit at 3:20!" },
+];
+</script>
+<style>
+  :root{
+    --sea:#0E7C86; --deep:#07444C; --shallow:#9FE3DA; --sand:#FFF6E0;
+    --coral:#FF6B4A; --ink:#10282B; --muted:#4A6568;
+  }
+  *{box-sizing:border-box;margin:0}
+  body{background:var(--sand);color:var(--ink);font:1.05rem/1.55 "Atkinson Hyperlegible",system-ui,sans-serif}
+  a{color:var(--deep)}
+  :focus-visible{outline:3px solid var(--coral);outline-offset:3px;border-radius:6px}
+
+  header{background:linear-gradient(180deg,var(--shallow) 0%,var(--sea) 100%);color:#fff;
+         padding:3rem 1.25rem 4.5rem;position:relative;overflow:hidden}
+  header::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:40px;background:var(--sand);
+         -webkit-mask:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 40' preserveAspectRatio='none'><path d='M0 20 Q150 0 300 20 T600 20 T900 20 T1200 20 V40 H0Z'/></svg>") center/100% 100%;
+                 mask:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 40' preserveAspectRatio='none'><path d='M0 20 Q150 0 300 20 T600 20 T900 20 T1200 20 V40 H0Z'/></svg>") center/100% 100%}
+  .inner{max-width:62rem;margin:0 auto}
+  h1,h2{font-family:"Baloo 2",system-ui,sans-serif;line-height:1}
+  h1{font-size:clamp(3rem,12vw,5.5rem);font-weight:800;text-shadow:0 3px 0 var(--deep)}
+  header p{font-size:1.2rem;margin-top:.5rem;color:var(--sand)}
+
+  main{max-width:62rem;margin:0 auto;padding:1rem 1.25rem 4rem}
+  h2{font-size:2rem;font-weight:800;color:var(--deep);margin:2rem 0 1rem}
+
+  .videos{display:grid;grid-template-columns:repeat(auto-fill,minmax(15rem,1fr));gap:1.25rem}
+  .vid{all:unset;cursor:pointer;display:block;background:#fff;border-radius:14px;overflow:hidden;
+       box-shadow:0 4px 0 var(--deep);border:2px solid var(--deep);transition:transform .15s}
+  .vid:hover{transform:translateY(-3px) rotate(-.5deg)}
+  .vid:focus-visible{outline:3px solid var(--coral);outline-offset:3px}
+  .thumb{position:relative;aspect-ratio:16/9;background:var(--shallow)}
+  .thumb img{width:100%;height:100%;object-fit:cover;display:block}
+  .play{position:absolute;inset:0;margin:auto;width:56px;height:56px;border-radius:50%;background:var(--coral);
+        display:grid;place-items:center;box-shadow:0 3px 0 rgba(0,0,0,.25)}
+  .play::before{content:"";border-left:18px solid #fff;border-top:11px solid transparent;border-bottom:11px solid transparent;margin-left:5px}
+  .vid-body{padding:.8rem 1rem 1rem}
+  .vid-title{font-weight:700}
+  .vid-note{color:var(--muted);font-size:.95rem;margin-top:.25rem}
+  .empty{background:#fff;border:2px dashed var(--sea);border-radius:14px;padding:1.5rem;color:var(--muted)}
+
+  .news{list-style:none;padding:0;display:grid;gap:.75rem}
+  .news li{background:#fff;border-left:6px solid var(--sea);border-radius:10px;padding:.9rem 1rem}
+  .news a{font-weight:700;text-decoration:none}
+  .news a:hover{text-decoration:underline}
+  .meta{color:var(--muted);font-size:.9rem;margin-top:.2rem}
+
+  dialog{border:0;padding:0;background:#000;width:min(960px,94vw);border-radius:14px;overflow:hidden}
+  dialog::backdrop{background:rgba(7,68,76,.85)}
+  dialog iframe{display:block;width:100%;aspect-ratio:16/9;border:0}
+  .close{position:absolute;top:.5rem;right:.5rem;background:var(--coral);color:#fff;border:0;border-radius:999px;
+         font:700 1rem "Atkinson Hyperlegible",sans-serif;padding:.45rem .9rem;cursor:pointer}
+  @media (prefers-reduced-motion:reduce){.vid{transition:none}.vid:hover{transform:none}}
+</style>
+</head>
+<body>
+<header><div class="inner">
+  <h1>Hi Luke!</h1>
+  <p>Videos picked for you, and what's going on in the Keys.</p>
+</div></header>
+
+<main>
+  <h2>Videos to watch</h2>
+  <div class="videos" id="videos"></div>
+
+  <h2>News from the Florida Keys</h2>
+  <ul class="news" id="news"><li>Loading the latest news…</li></ul>
+</main>
+
+<dialog id="player" aria-label="Video player">
+  <button class="close" id="close">Close</button>
+  <iframe id="frame" title="YouTube video" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>
+</dialog>
+
+<script>
+function ytId(url){
+  const m = url.match(/(?:v=|youtu\.be\/|shorts\/|embed\/)([\w-]{11})/);
+  return m ? m[1] : null;
+}
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+// Videos
+const grid = document.getElementById("videos");
+const list = VIDEOS.map(v => ({...v, id: ytId(v.url)})).filter(v => v.id);
+grid.innerHTML = list.length ? list.map(v => `
+  <button class="vid" data-id="${v.id}" aria-label="Play ${esc(v.title || 'video')}">
+    <div class="thumb"><img src="https://i.ytimg.com/vi/${v.id}/hqdefault.jpg" alt="" loading="lazy"><span class="play"></span></div>
+    <div class="vid-body"><div class="vid-title">${esc(v.title || "Video")}</div>${v.note ? `<div class="vid-note">${esc(v.note)}</div>` : ""}</div>
+  </button>`).join("")
+  : `<div class="empty">No videos yet. Check back soon!</div>`;
+
+// Player: plays on this page via youtube-nocookie, so he doesn't drift into YouTube
+const dlg = document.getElementById("player"), frame = document.getElementById("frame");
+grid.addEventListener("click", e => {
+  const b = e.target.closest(".vid"); if (!b) return;
+  frame.src = `https://www.youtube-nocookie.com/embed/${b.dataset.id}?autoplay=1&rel=0&modestbranding=1`;
+  dlg.showModal();
+});
+const stop = () => { frame.src = ""; };
+document.getElementById("close").onclick = () => dlg.close();
+dlg.addEventListener("close", stop);
+dlg.addEventListener("click", e => { if (e.target === dlg) dlg.close(); });
+
+// News (served by functions/api/news.js)
+const ago = d => {
+  const h = Math.round((Date.now() - new Date(d)) / 36e5);
+  if (isNaN(h)) return "";
+  if (h < 1) return "just now";
+  if (h < 24) return `${h} hour${h > 1 ? "s" : ""} ago`;
+  const days = Math.round(h / 24);
+  return days === 1 ? "yesterday" : `${days} days ago`;
+};
+fetch("/api/news").then(r => r.json()).then(items => {
+  const ul = document.getElementById("news");
+  ul.innerHTML = items.length ? items.map(i => `
+    <li><a href="${esc(i.link)}" target="_blank" rel="noopener">${esc(i.title)}</a>
+    <div class="meta">${esc(i.source)}${i.source && i.date ? " – " : ""}${ago(i.date)}</div></li>`).join("")
+    : "<li>No news right now.</li>";
+}).catch(() => {
+  document.getElementById("news").innerHTML = "<li>News couldn't load. Try again later.</li>";
+});
+</script>
+</body>
+</html>
